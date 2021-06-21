@@ -18,7 +18,7 @@ def Prompt():
 		[sg.Button("Begin", key="-ENTER-"), sg.Button("Exit", key="-EXIT-")] ]
 
 	# Create the input window
-	window = sg.Window("Charlie Chaplin's Assembly Line Reader", layout1, margins=(40,40))
+	window = sg.Window("Charlie Chaplin's Assembly Line: Speed Reader", layout1, margins=(40,40))
 
 	# Event loop
 	run_gif = True
