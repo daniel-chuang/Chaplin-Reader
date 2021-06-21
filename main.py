@@ -58,25 +58,41 @@ def Prompt():
     return values
 
 
-def AssemblyLine(values):
+def Prep(values):
     # Preparing for the next window - by words version
     try:
         words = re.split(r"\n| ", values["-TEXT-"])
     except TypeError:
         sg.popup("Invalid Input")
+        words = ""
 
     delay = 60000 / values["-SLIDER-"]
 
     print(words)
+    return words, delay
+
+def AssemblyLine(words, delay):
     TEXT_WIDTH = 40
-    layout2 = [[sg.Text(size=(TEXT_WIDTH, 1), key="-TEXT-")]]
-    window2 = sg.Window("Charlie Chaplin's Assembly Line Reader", layout2)
+    
+    layout = [[sg.Text(size=(TEXT_WIDTH, 1), key="-TEXT-")]]
+    window = sg.Window("Charlie Chaplin's Assembly Line Reader", layout, margins=(100, 100))
     for i in range(len(words)):
-        window2.read(timeout=delay)
-        window2["-TEXT-"].update(" ".join(words[i:]))
+        window.read(timeout=delay)
+        window["-TEXT-"].update(" ".join(words[i:]))
 
-    window2.close()
+    window.close()
 
+def SingleWord(words, delay):
+    TEXT_WIDTH = 20
+    layout = [[sg.Text(size=(TEXT_WIDTH, 1), key="-TEXT-", justification="center")]]
+    window = sg.Window("Charlie Chaplin's Assembly Line Reader", layout, margins=(100, 100))
+    for i in range(len(words)):
+        window.read(timeout=delay)
+        window["-TEXT-"].update(" ".join(words[i])) 
 
 values = Prompt()
-AssemblyLine(values)
+words, delay = Prep(values)
+if values["-ASSEMBLY LINE-"]:
+    AssemblyLine(words, delay)
+if values["-SINGLE WORD-"]:
+    SingleWord(words, delay)
