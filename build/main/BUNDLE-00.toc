@@ -1,0 +1,3 @@
+([('main',
+   '/Users/user/Desktop/Programming/Python/Chaplin-Reader/dist/main',
+   'EXECUTABLE')],)
