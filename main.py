@@ -1,7 +1,11 @@
+# In order to build with pyinstaller use this command:
+# pyinstaller -F -w --onefile --windowed --add-data "chaplin.gif:." main.py
+
 # Imports
 import PySimpleGUI as sg
 import time
 import re
+import os
 
 
 def Prompt():
@@ -10,8 +14,21 @@ def Prompt():
     THEME = 0
     sg.theme(THEMES[THEME])  # Choosing theme
 
+    # Setting up image
+    def resource_path(relative_path):
+        """ Get absolute path to resource, works for dev and for PyInstaller """
+        try:
+            # PyInstaller creates a temp folder and stores path in _MEIPASS
+            base_path = sys._MEIPASS
+        except Exception:
+            base_path = os.path.abspath(".")
+
+        return os.path.join(base_path, relative_path)
+
+    chaplin = resource_path("./chaplin.gif")
+
     # Layout for input window
-    layout1 = [[sg.Image("chaplin.gif", key="-CHAPLIN GIF-")],
+    layout1 = [[sg.Image(chaplin, key="-CHAPLIN GIF-")],
                [sg.Button("Toggle Gif", key="-TOGGLE CHAPLIN-")],
                [sg.Text("Enter some text", key="-PROMPT 1-")],
                [sg.InputText(key="-TEXT-")],
@@ -33,7 +50,7 @@ def Prompt():
         # Go to the next frame of the gif if run_gif is True
         if run_gif:
             window.FindElement(
-                "-CHAPLIN GIF-").UpdateAnimation("chaplin.gif", time_between_frames=100)
+                "-CHAPLIN GIF-").UpdateAnimation(chaplin, time_between_frames=100)
 
         # Toggles whether or not the gif is run
         if event == "-TOGGLE CHAPLIN-":
